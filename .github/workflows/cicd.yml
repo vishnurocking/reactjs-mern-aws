@@ -1,4 +1,4 @@
-name: Deploy Node Application
+name: Deploy React Application
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: ivishnu/nodejs-app:latest
+          tags: ivishnu/reactjs-app:latest
 
   deploy:
     needs: build
@@ -31,9 +31,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Pull image from docker hub
+      - name: Pull image from Docker Hub
         run: docker pull ivishnu/reactjs-app:latest
-      - name: Delete old container
-        run: docker rm -f reactjs-app-container
+      - name: Stop and remove old container
+        run: docker rm -f reactjs-app-container || true
       - name: Run Docker Container
-        run: docker run -d -p 3000:80 --name reactjs-app-container ivishnu/reactjs-app
+        run: docker run -d -p 3000:80 --name reactjs-app-container ivishnu/reactjs-app:latest
