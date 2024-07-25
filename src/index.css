@@ -1,13 +1,54 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.App.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.App.dark {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.App.dark .navbar {
+  background-color: #222222 !important;
+}
+
+.App.dark .list-group-item {
+  background-color: #444444;
+  color: #ffffff;
+  border-color: #555555;
+}
+
+.App.dark .form-control {
+  background-color: #555555;
+  color: #ffffff;
+  border-color: #666666;
+}
+
+.App.dark .btn-primary {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.App.dark .btn-warning {
+  background-color: #d39e00;
+  border-color: #c69500;
+}
+
+.App.dark .btn-danger {
+  background-color: #bd2130;
+  border-color: #b21f2d;
 }
