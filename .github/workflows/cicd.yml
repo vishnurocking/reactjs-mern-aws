@@ -21,6 +21,9 @@ jobs:
         with:
           push: true
           tags: ivishnu/reactjs-app:latest
+          build-args: |
+            REACT_APP_NODE_ENV=production
+            REACT_APP_SERVER_BASE_URL=${{ secrets.REACT_APP_SERVER_BASE_URL }}
 
   deploy:
     needs: build
