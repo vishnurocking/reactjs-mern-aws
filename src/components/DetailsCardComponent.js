@@ -5,8 +5,9 @@ function DetailsCardComponent({ sn, userN, email }) {
     <div class="card my-2">
       <div class="card-body">
         <h5>
-          {sn} <br /> User Name : {userN} <br />
-          <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>Email : {email}
+          UserId: {sn} <br />
+          User Name: {userN} <br />
+          Email: {email}
         </h5>
       </div>
     </div>
