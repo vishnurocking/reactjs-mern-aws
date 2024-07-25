@@ -5,6 +5,7 @@ import axios from "axios";
 function App() {
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [recordData, setRecordData] = useState([]);
+  const [error, setError] = useState(null);
 
   console.log("process.env:", process.env);
   console.log(
@@ -15,19 +16,22 @@ function App() {
     "process.env.REACT_APP_SERVER_BASE_URL:",
     process.env.REACT_APP_SERVER_BASE_URL
   );
-  const base_url =
-    process.env.REACT_APP_NODE_ENV === "development"
-      ? process.env.REACT_APP_LOCAL_BASE_URL
-      : process.env.REACT_APP_SERVER_BASE_URL;
+
+  const base_url = process.env.REACT_APP_SERVER_BASE_URL;
+  console.log("base_url:", base_url);
 
   useEffect(() => {
     axios
       .get(`${base_url}/getUsers`)
       .then((res) => {
         setRecordData(res.data);
+        setError(null);
       })
-      .catch((err) => alert(`Some error occured ==>${err}`));
-  }, []);
+      .catch((err) => {
+        console.error("Error fetching users:", err);
+        setError(`Error fetching users: ${err.message}`);
+      });
+  }, [base_url]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -36,13 +40,17 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    axios
-      .post(`${base_url}/addUser`, formData)
-      .then((res) => {
-        setFormData({ name: "", email: "" });
-        alert("User created successfully");
-      })
-      .catch((err) => alert(`Some error occured ==>${err}`));
+    try {
+      const res = await axios.post(`${base_url}/addUser`, formData);
+      setFormData({ name: "", email: "" });
+      alert("User created successfully");
+      // Refresh the user list
+      const updatedUsers = await axios.get(`${base_url}/getUsers`);
+      setRecordData(updatedUsers.data);
+    } catch (err) {
+      console.error("Error adding user:", err);
+      alert(`Error adding user: ${err.message}`);
+    }
   };
 
   return (
@@ -63,20 +71,28 @@ function App() {
         </a>
       </nav>
       <div className="container">
+        {error && <div className="alert alert-danger">{error}</div>}
         <div className="row">
           <div className="col">
             <h3 className="text-center">Users List</h3>
-            <ul>
-              {recordData.map((r, i) => (
-                <tl key={i}>
-                  <DetailsCardComponent
-                    email={r.email}
-                    sn={i + 1}
-                    userN={r.name}
-                  />
-                </tl>
-              ))}
-            </ul>
+            {recordData.length === 0 ? (
+              <p>
+                No users found. The list may be empty or there was an error
+                fetching the data.
+              </p>
+            ) : (
+              <ul>
+                {recordData.map((r, i) => (
+                  <li key={i}>
+                    <DetailsCardComponent
+                      email={r.email}
+                      sn={i + 1}
+                      userN={r.name}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className="col">
             <h2>Add Users</h2>
